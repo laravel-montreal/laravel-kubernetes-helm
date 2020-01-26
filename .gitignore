@@ -1,0 +1,5 @@
+/docker/laravel/*
+!/docker/laravel/.gitkeep
+/docker/db/*
+!/docker/db/.gitkeep
+/docker/logs
