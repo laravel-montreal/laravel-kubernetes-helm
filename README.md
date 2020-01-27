@@ -92,4 +92,4 @@ Thanks to [Damber Prasad Gautam](https://github.com/dambergautam) for the inspir
 
 Thanks to [Frédéric Chiasson](https://github.com/cariboufute) and [Miguel Legault](https://github.com/mlatjac) for their invaluable contribution to the Laravel Montreal user group.
 
-Thanks to [Aurélien Lanos]() for preparing the presentation to Laravel Montreal for which I have made this repository.
+Thanks to [Aurélien Lanos](https://github.com/HiddenCorp) for preparing the presentation to Laravel Montreal for which I have made this repository.
