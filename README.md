@@ -84,6 +84,7 @@ bash ./bin/publish_chart.sh
 ## TODO
 
 - Database management in the Kubernetes cluster.
+- Laravel Storage management in a shared Persistent Volume.
 - Command-line cluster deployment (currently through user interface).
 
 ## ACKNOWLEDGEMENTS
