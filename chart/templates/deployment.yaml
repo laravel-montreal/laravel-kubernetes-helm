@@ -1,9 +1,9 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "laravel.fullname" . }}
+  name: {{ template "laravel.name" . }}-app
   labels:
-    app: {{ template "laravel.name" . }}
+    app: {{ template "laravel.name" . }}-app
     chart: {{ template "laravel.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -11,12 +11,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "laravel.name" . }}
+      app: {{ template "laravel.name" . }}-app
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "laravel.name" . }}
+        app: {{ template "laravel.name" . }}-app
         release: {{ .Release.Name }}
     spec:
       volumes:
@@ -26,30 +26,26 @@ spec:
           configMap:
             name: {{ template "laravel.name" . }}-nginx-vhost
       containers:
-        # Nginx Container
         - name: {{ .Chart.Name }}-nginx
-          image: "dleblanc78/laravel-appointments:latest"
-          #image: "nginx:alpine"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.nginx.repository }}:{{ .Values.nginx.tag }}"
+          imagePullPolicy: {{ .Values.nginx.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.nginxService.internalPort }}
+            - containerPort: {{ .Values.nginxService.internalPort }}
+              protocol: TCP
           volumeMounts:
             - name: nginx-vhost
               mountPath: /etc/nginx/conf.d
             - name: source-code
-              mountPath: /var/www/laravel/
-        # PHPfpm Container
+              mountPath: /var/www/laravel
         - name: {{ .Chart.Name }}-phpfpm
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.phpfpm.repository }}:{{ .Values.phpfpm.tag }}"
+          imagePullPolicy: {{ .Values.phpfpm.pullPolicy }}
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "cp -r /var/www/laravel/. /laravel"]
+                command: ["/bin/sh", "-c", "cp -r /var/www/laravel/. /laravel; composer install; php artisan key:generate; chmod -R 777 /laravel; chmod -R 777 /var/www/laravel;"]
           ports:
-            - name: http-phpfpm
-              containerPort: {{ .Values.phpfpmService.port }}
+            - containerPort: {{ .Values.phpfpmService.port }}
               protocol: TCP
           volumeMounts:
             - name: source-code

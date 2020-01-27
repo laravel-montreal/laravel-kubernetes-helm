@@ -2,6 +2,7 @@ FROM php:7.3-fpm
 
 ENV WORKDIR "/var/www/laravel"
 
+
 # Install common tools and libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -64,7 +65,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
 
 # Set your timezone here
 RUN rm /etc/localtime
-RUN ln -s /usr/share/zoneinfo/Australia/Brisbane /etc/localtime
+RUN ln -s /usr/share/zoneinfo/America/Toronto /etc/localtime
 RUN "date"
 
 # Clean
@@ -75,7 +76,6 @@ COPY ./conf/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY ./conf/php.ini /usr/local/etc/php/conf.d/php.ini
 
 RUN mkdir -p ${WORKDIR}
-
-COPY ./laravel ${WORDIR}
+COPY ./laravel ${WORKDIR}
 
 WORKDIR ${WORKDIR}

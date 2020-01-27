@@ -3,3 +3,4 @@
 /docker/db/*
 !/docker/db/.gitkeep
 /docker/logs
+/chart/values-production.yaml

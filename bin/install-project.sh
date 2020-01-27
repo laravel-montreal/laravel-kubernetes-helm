@@ -1,16 +1,7 @@
 #!/bin/bash
 
-rm -rf docker/laravel
-
-# Clone your existing project
-git clone https://github.com/laravel-montreal/Laravel-Appointments.git laravel
-cp laravel/.env.example laravel/.env
-mv laravel docker/laravel
-
-# Create image
 docker-compose up --build -d
 
-# Perform series of action in container
 APP_NAME="laravel_php_fpm"
 
 docker-compose exec $APP_NAME composer install
